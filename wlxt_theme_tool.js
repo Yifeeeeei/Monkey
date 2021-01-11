@@ -1,28 +1,53 @@
 // ==UserScript==
-// @name         网络学堂深色配色
-// @version      1.2
-// @description  方便夜间内卷
+// @name         wlxt_theme_tool
+// @version      1.3
+// @description  customize your wlxt
 // @author       if
-// @updateURL    https://yifeeeeei.github.io/Monkey/wlxt_dark_theme.user.js
-// @downloadURL  https://yifeeeeei.github.io/Monkey/wlxt_dark_theme.user.js
+// @updateURL    https://yifeeeeei.github.io/Monkey/wlxt_theme_tool.user.js
+// @downloadURL  https://yifeeeeei.github.io/Monkey/wlxt_theme_tool.user.js
 // @include      https://learn.tsinghua.edu.cn/f/*
+// @grant        GM_getValue
+// @grant        GM_setValue
 // @run-at       document-start
 // ==/UserScript==
-
 
 //update
 //1.1 just organised the code
 //1.2 the original-bloody-blind-to-death website will not flash by now... well sometime it still does, much not so often
+//1.3 change name to "wlxt_theme_tool", allowint color customization
+
 
 (function () {
 	"use strict";
 	var body = document.getElementsByTagName("body")[0];
 
-	var basic_color = "black";
-	var side_color = "rgb(37,37,37)";
-	var color3 = "rgb(60,60,60)";
-	var text_color1 = "white";
-	var text_color2 = "rgb(186,186,186)";
+	var colorSet = GM_getValue("colorSet", [-1]);
+	var basic_color;
+	var side_color;
+	var color3;
+	var text_color1;
+	var text_color2;
+	if (colorSet[0] == -1) {
+		basic_color = "black";
+		side_color = "rgb(37,37,37)";
+		color3 = "rgb(60,60,60)";
+		text_color1 = "white";
+		text_color2 = "rgb(186,186,186)";
+
+		GM_setValue("colorSet", [
+			"black",
+			"rgb(37,37,37)",
+			"rgb(60,60,60)",
+			"white",
+			"rgb(186,186,186)",
+		]);
+	} else {
+		basic_color = colorSet[0];
+		side_color = colorSet[1];
+		color3 = colorSet[2];
+		text_color1 = colorSet[3];
+		text_color2 = colorSet[4];
+	}
 	var domain = window.location.href;
 
 	var head, style;
@@ -61,7 +86,7 @@
 		//searchpannel
 		var searchpannel = `#searchpanel{background-color :${basic_color};} tbody,tbody>*,tbody>*>*,tbody>*>*>*,tbody>*>*>*>*,thread,thread>*,th,thread>*>*,thread>*>*>*{color:${text_color1} !important;}`;
 		//btn
-		var btn = `.btn,.btn>*,.btn>*>*{background-color:${color3} !important;}`
+		var btn = `.btn,.btn>*,.btn>*>*{background-color:${color3} !important;}`;
 		style.innerHTML =
 			style_innerHTML_ori +
 			set_most_background +
@@ -114,7 +139,7 @@
             #getAllNetCourse>a>i,#getAllNetCourse>a{background-color:${color3};}` + //open;
 			`body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>* >div.fl>div.hdtitle>div.btngroup>p,#course1>dl>dt{color:${text_color1};}
 	        body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.name,
-			body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.stud>span.unsee{color:${text_color1};}` +//text
+			body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.stud>span.unsee{color:${text_color1};}` + //text
 			`html>body>div.bground{background-color:${basic_color};}` + //登录页面
 			`.chongxin{background-color:${color3};}`;
 	}
@@ -207,58 +232,95 @@
             .fenye,#tlbt,.detail >form {background-color:${basic_color} !important;}
             #answer_first{color:${text_color1};}
             #addBtn,#addBtn>*{background-color:${color3};}`;
-    }
-    //11 Q&A
-    else if(domain.indexOf("https://learn.tsinghua.edu.cn/f/wlxt/bbs/bbs_kcdy/student/beforePageDyList") != -1)
-    {
-        otheR = `#tabbox,.tabbox .mytabs li.active {background-color:${basic_color};}
+	}
+	//11 Q&A
+	else if (
+		domain.indexOf(
+			"https://learn.tsinghua.edu.cn/f/wlxt/bbs/bbs_kcdy/student/beforePageDyList"
+		) != -1
+	) {
+		otheR = `#tabbox,.tabbox .mytabs li.active {background-color:${basic_color};}
 		    .tabbox .mytabs li,.tabbox .mytabs li >p,table.dataTable thead th, table.dataTable>tbody>tr>td>*,table.dataTable>tbody>tr>td{color:${text_color1} !important;}
 		    #wtj>tbody>tr>td>a.btn,.webicon-edit:before{background-color:${color3};}
 		    a.btn,i.webicon-increse{background-color:${color3} !important;}`;
-    }
-    //12 Email
-    else if(domain.indexOf("https://learn.tsinghua.edu.cn/f/wlxt/mail/yj_yjxxb/student/beforePageList") != -1)
-    {
-        otheR = `#tabbox,.tabbox .mytabs li.active,.zeromodal-container  {background-color:${basic_color} !important;}
+	}
+	//12 Email
+	else if (
+		domain.indexOf(
+			"https://learn.tsinghua.edu.cn/f/wlxt/mail/yj_yjxxb/student/beforePageList"
+		) != -1
+	) {
+		otheR = `#tabbox,.tabbox .mytabs li.active,.zeromodal-container  {background-color:${basic_color} !important;}
 		    .tabbox .mytabs li,.tabbox .mytabs li >p,table.dataTable thead th, table.dataTable>tbody>tr>td>*,table.dataTable>tbody>tr>td{color:${text_color1} !important;}
 		    #wtj>tbody>tr>td>a.btn,.webicon-send:before{background-color:${color3};}
 		    a.btn,i.webicon-increse{background-color:${color3} !important;}
 		    .detail .tipbox,#content>div.course-w>div.detail>div.tipbox>span{background-color:${side_color};}`;
-    }
-    //13 inner-Email
-    else if(domain.indexOf("https://learn.tsinghua.edu.cn/f/wlxt/mail/yj_yjxxb/student/beforeAdd") != -1)
-    {
-        otheR = `.left{color:${text_color2} !important;}
+	}
+	//13 inner-Email
+	else if (
+		domain.indexOf(
+			"https://learn.tsinghua.edu.cn/f/wlxt/mail/yj_yjxxb/student/beforeAdd"
+		) != -1
+	) {
+		otheR = `.left{color:${text_color2} !important;}
 		    #cke_1_top,#cke_1_bottom,.cke_wysiwyg_frame, .cke_wysiwyg_div{color:${text_color2};background-color:${color3} !important;}
             iframe>html>body>p{color:${text_color1} !important;}`;
-    }
-    //14  Groups
-    else if(domain.indexOf("https://learn.tsinghua.edu.cn/f/wlxt/qz/v_wlkc_qzcyb/student/beforePageWdfzList") != -1)
-    {
-        otheR = `#tabbox,.tabbox .mytabs li.active {background-color:${basic_color};}
+	}
+	//14  Groups
+	else if (
+		domain.indexOf(
+			"https://learn.tsinghua.edu.cn/f/wlxt/qz/v_wlkc_qzcyb/student/beforePageWdfzList"
+		) != -1
+	) {
+		otheR = `#tabbox,.tabbox .mytabs li.active {background-color:${basic_color};}
 		    .tabbox .mytabs li >p,table.dataTable thead th, table.dataTable>tbody>tr>td>*,table.dataTable>tbody>tr>td{color:${text_color1} !important;}
 		    #wtj>tbody>tr>td>a.btn,.webicon-edit:before{background-color:${color3};}
 		    a.btn,i.webicon-increse{background-color:${color3} !important;}`;
-    }
-    //15 Online Coures
-    else if(domain.indexOf("https://learn.tsinghua.edu.cn/f/wlxt/zxkt/wlkc_zxktb/student/beforePageList") != -1)
-    {
-        otheR = `#tabbox,.tabbox .mytabs li {color:${text_color1};background-color:${basic_color};}
+	}
+	//15 Online Coures
+	else if (
+		domain.indexOf(
+			"https://learn.tsinghua.edu.cn/f/wlxt/zxkt/wlkc_zxktb/student/beforePageList"
+		) != -1
+	) {
+		otheR = `#tabbox,.tabbox .mytabs li {color:${text_color1};background-color:${basic_color};}
 		    .tabbox .mytabs li.active{background-color:${basic_color};}
 		    .tabbox .mytabs li >p,table.dataTable thead th, table.dataTable>tbody>tr>td>*,table.dataTable>tbody>tr>td{color:${text_color1} !important;}
 		    .smbox,.headsm,.headsm>i {color:${text_color1} ;background-color:${color3};z-index:1}
 		    .headsm{color:${text_color1} !important;z-index:10;}`;
 	}
 	//16 login
-	else if(domain.indexOf("https://learn.tsinghua.edu.cn/f/login") != -1)
-	{
+	else if (domain.indexOf("https://learn.tsinghua.edu.cn/f/login") != -1) {
 		//去掉header
 		var header = document.getElementsByClassName("header")[0];
 		header.parentElement.removeChild(header);
-		otheR = `.bgcolor{background-color:${basic_color};}`+
+		otheR =
+			`.bgcolor{background-color:${basic_color};}` +
 			`#loginDivId>div>div>span,#loginForm,#loginDivId{background-color:rgba(0,0,0,0.0);}`;
 	}
 
-    //sum up
+	//sum up
 	style.innerHTML = style.innerHTML + otheR;
+
+	//set color
+	
+	var changeColor = document.createElement("img");
+	changeColor.id = "changeColor";
+	changeColor.src =
+		"data:image/png;base64,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";
+	changeColor.onclick = function () {
+		colorSet[0] = prompt("set main color ( rgb(x,x,x) or name )",colorSet[0]);
+		colorSet[1] = prompt("set side color 1 ( rgb(x,x,x) or name )",colorSet[1]);
+		colorSet[2] = prompt("set side color 2 ( rgb(x,x,x) or name )",colorSet[2]);
+		colorSet[3] = prompt("set main text color ( rgb(x,x,x) or name )",colorSet[3]);
+		colorSet[4] = prompt("set side text color ( rgb(x,x,x) or name )",colorSet[4]);
+	
+		GM_setValue("colorSet",colorSet);
+	};
+	var changeColor_css = `#changeColor{width:50px;height:50px;position:fixed;bottom:0px;left:0px;z-index:10;background-color:rgba(0,0,0,0.0);}`;
+	console.log(document.getElementsByTagName("body").length);
+	body.appendChild(changeColor);
+	console.log("there");
+	style.innerHTML = style.innerHTML + changeColor_css;
+	
 })();
