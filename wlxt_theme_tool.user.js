@@ -16,7 +16,7 @@
 //1.1 just organised the code
 //1.2 the original-bloody-blind-to-death website will not flash by now... well sometime it still does, much not so often
 //1.3 change name to "wlxt_theme_tool", allowing color customization
-//1.4 login page debug & change_color_icon debug. change_color_icon will now show properly
+//1.4 login page debug & change_color_icon debug, new_email page debug. change_color_icon will now show properly
 
 (function () {
 	"use strict";
