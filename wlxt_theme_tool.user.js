@@ -72,7 +72,7 @@
 		//top banner
 		var top_banner =
 			`#banner,#banner>*,#banner>*>*,#banner>*>*>*,#banner>*>*>*>*,#banner>*>*>*>*>*,#banner>*>*>*>*>*>*,#banner>*>*>*>*>*>*>*,#banner>*>*>*>*>*>*>*>*,#banner>*>*>*>*>*>*>*>*>*,#filtericon>div>div.logo-cot,#filtericon>div>div.logo-cot>div>div.up-img-info>p>*{background-color:${side_color};color:${text_color1};}` +
-			`#mail,#stmail{color:${text_color1} !important; background-color:${color3} !important;}` +
+			`#mail,#stmail,#stmail > span{color:${text_color1} !important; background-color:${color3} !important;}` +
 			`#main>*:hover,#mail:hover,#stmail:hover,#stmail>span:hover{background-color:${color3} !important;color:${text_color2} !important;}`;
 		//coursename
 		var course_name = `.course >span.overflow {color:${text_color1};}
@@ -314,8 +314,9 @@
 			`.bgcolor{background-color:${basic_color};}` +
 			`#loginDivId>div>div>span,#loginForm,#loginDivId{background-color:rgba(0,0,0,0.0);}` +
 			`div.title{color:${text_color1} !important;}` +
-			`body > div.header > div > div.right > div > a,.header,body > div.header > div > div.right > div,body > div.header > div > div.right > div > a > span,body > div.header > div > div.left > a > img,body > div.header > div,body > div.header > div > div.left > a,body > div.header > div > div.right > div > a > span,body > div.header > div > div.right{background-color:${color3}!important;}`;
-	}
+			`body > div.header > div,body > div.header > div > div.right > div > a,.header,body > div.header > div > div.right > div,body > div.header > div > div.right > div > a > span,body > div.header > div > div.left > a > img,body > div.header > div,body > div.header > div > div.left > a,body > div.header > div > div.right > div > a > span,body > div.header > div > div.right{background-color:${color3} !important;}`;
+			
+		}
 
 	//sum up
 	style.innerHTML = style.innerHTML + otheR;
