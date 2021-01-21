@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         wlxt_theme_tool
-// @version      1.4
+// @version      1.5
 // @description  customize your wlxt
 // @author       if
 // @updateURL    https://yifeeeeei.github.io/Monkey/wlxt_theme_tool.user.js
@@ -17,6 +17,7 @@
 //1.2 the original-bloody-blind-to-death website will not flash by now... well sometime it still does, much not so often
 //1.3 change name to "wlxt_theme_tool", allowing color customization
 //1.4 login page debug & change_color_icon debug, new_email page debug. change_color_icon will now show properly,and,there wont be an extra 'setcolor' btn on that document thing...
+//1.5 debug
 
 (function () {
 	"use strict";
@@ -126,8 +127,8 @@
 			`div#calendar div.tr_5,div#calendar div.tr_5 table,div#calendar div.tr_5 table tbody tr,div#calendar div.tr_5 table tbody tr th,div#calendar div.tr_5 table tbody tr td {background-color:${color3};}` +
 			`ul#myTabs.nav.nav-tabs.clearfix {background-color:${basic_color};}` +
 			`div.remind{background-color:${basic_color};}` +
-			`body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu{border-style:solid;border-width :1px; border-color:${basic_color};}
-            body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu:hover{border-style:solid;border-width :1px; border-color:${text_color2};}` + //hover
+			`body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu,body>div.nav>div#myTabContent>div#course2>dl.boxdetail>div#nextsuojiaocourse>dd.stu{border-style:solid;border-width :1px; border-color:${basic_color};}
+            body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu:hover,body>div.nav>div#myTabContent>div#course2>dl.boxdetail>div#nextsuojiaocourse>dd.stu:hover{border-style:solid;border-width :1px; border-color:${text_color2};}` + //hover
 			`body>div.nav>div#myTabContent>div#over>div.open{background-color:${basic_color};}
 	        body>div.nav>div#myTabContent>div#over>div.open>div.search>form>a,body>div.nav>div#myTabContent>div#over>div.open>div.search>form>a>i{background-color:${color3};}
 	        table.dataTable thead th, table.dataTable{color:${text_color1} !important;}
@@ -145,9 +146,9 @@
 	        .select2-container .select2-selection--single{height:30px !important;}
 	        #pagefooter>a{color:${text_color2} !important;}
             #getAllNetCourse>a>i,#getAllNetCourse>a{background-color:${color3};}` + //open;
-			`body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>* >div.fl>div.hdtitle>div.btngroup>p,#course1>dl>dt{color:${text_color1};}
-	        body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.name,
-			body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.stud>span.unsee{color:${text_color1};}` + //text
+			`body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>* >div.fl>div.hdtitle>div.btngroup>p,#course1>dl>dt,body>div.nav>div#myTabContent>div#course2>dl.boxdetail>div#nextsuojiaocourse>* >div.fl>div.hdtitle>div.btngroup>p,#course2>dl>dt{color:${text_color1};}
+	        body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.name,body>div.nav>div#myTabContent>div#course2>dl.boxdetail>div#nextsuojiaocourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.name,
+			body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.stud>span.unsee,body>div.nav>div#myTabContent>div#course2>dl.boxdetail>div#nextsuojiaocourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.stud>span.unsee{color:${text_color1};}` + //text
 			`html>body>div.bground{background-color:${basic_color};}` + //登录页面
 			`.chongxin{background-color:${color3};}`;
 	}
@@ -180,15 +181,19 @@
 		    .content .head .time span:nth-child(2n+1){color:${text_color2} !important;}
 		    a{color:${text_color2} !important;}`;
 	}
-	//5 Overview
+	//5 Overview && some other
 	else if (
 		domain.indexOf(
 			"https://learn.tsinghua.edu.cn/f/wlxt/kc/v_kcxx_jskcxx/student/beforeXskcxx"
+		) != -1 ||
+		domain.indexOf(
+			"https://learn.tsinghua.edu.cn/f/wlxt/kc/v_kcxx_jskcxx/student/gkBeforeKcxx"
 		) != -1
 	) {
 		otheR = `#content>div.course-w>div.detail>div.content-cell>div.stu_book>div.right>div{color:${text_color1} !important;}
 		    #content>div.course-w>div.detail>div>div.stu_book>div.right>table>tbody>*,#content>div.course-w>div.detail>div>div.stu_book>div.right>table>tbody>*>*{color:${text_color1};}
-		    #content>div.course-w>div.detail>div>div>div>p,#content>div.course-w>div.detail>div>div>p,#content>div.course-w>div.detail>div>div>div>p,#content>div.course-w>div.detail>div>div>div>div>p{color:${text_color1} !important;}`;
+			#content>div.course-w>div.detail>div>div>div>p,#content>div.course-w>div.detail>div>div>p,#content>div.course-w>div.detail>div>div>div>p,#content>div.course-w>div.detail>div>div>div>div>p{color:${text_color1} !important;}
+			body > div.header > div,body > div.header > div>*,body > div.header > div>*>*,body > div.header > div>*>*>*>*,body > div.header > div>*>*>*,body > div.header > div > div.left > a > img,body > div.header{background-color:${color3} !important;}`;
 	}
 	//6 Documents
 	else if (
@@ -198,7 +203,8 @@
 	) {
 		otheR = `#tabbox,#tabbox>ul>li{background-color:${basic_color};}
 		    #content>div.course-w>div.detail>form>div.cont>div.navli>div{background-color:${basic_color};}
-		    .navli .playli ul.selected li{background-color:${basic_color};}`;
+			.navli .playli ul.selected li{background-color:${basic_color};}
+			body > div.header > div,body > div.header > div>*,body > div.header > div>*>*,body > div.header > div>*>*>*>*,body > div.header > div>*>*>*,body > div.header > div > div.left > a > img,body > div.header{background-color:${color3} !important;}`;
 	}
 	//7 Works
 	else if (
@@ -208,12 +214,15 @@
 	) {
 		otheR = `#tabbox,.tabbox .mytabs li.active {background-color:${basic_color};}
 		    .tabbox .mytabs li,#wtj>*>*>*,#wtj>*>*>*>a{color:${text_color1};}
-		    #wtj>tbody>tr>td>a.btn,.webicon-edit:before{background-color:${color3};}`;
+			#wtj>tbody>tr>td>a.btn,.webicon-edit:before{background-color:${color3};}`;
 	}
 	//8 inner-Works
 	else if (
 		domain.indexOf(
 			"https://learn.tsinghua.edu.cn/f/wlxt/kczy/zy/student/viewCj"
+		) != -1 ||
+		domain.indexOf(
+			"https://learn.tsinghua.edu.cn/f/wlxt/kczy/zy/student/viewZy"
 		) != -1
 	) {
 		otheR = `.detail .list .left{color:${text_color2};}
@@ -226,7 +235,7 @@
 		) != -1
 	) {
 		otheR = `#tabbox,.tabbox .mytabs li.active {background-color:${basic_color};}
-		    .tabbox .mytabs li >p,table.dataTable thead th, table.dataTable>tbody>tr>td>*,table.dataTable>tbody>tr>td{color:${text_color1} !important;}
+			.tabbox .mytabs li >p,table.dataTable thead th, table.dataTable>tbody>tr>td>*,table.dataTable>tbody>tr>td,#content > div.fl.course-w > div.detail > div.list.lists.clearfix.louzhuu > div.right > p{color:${text_color1} !important;}
 		    #wtj>tbody>tr>td>a.btn,.webicon-edit:before{background-color:${color3};}
 		    a.btn,i.webicon-increse{background-color:${color3} !important;}`;
 	}
@@ -238,7 +247,8 @@
 	) {
 		otheR = `.detail .tipbox,.detail .tipbox>span,input,textarea{background-color:${color3} !important;}
             .fenye,#tlbt,.detail >form {background-color:${basic_color} !important;}
-            #answer_first{color:${text_color1};}
+			#answer_first{color:${text_color1};}
+			.detail .lists .right > p{color:${text_color1} !important};
             #addBtn,#addBtn>*{background-color:${color3};}`;
 	}
 	//11 Q&A
@@ -309,12 +319,17 @@
 		    .headsm{color:${text_color1} !important;z-index:10;}`;
 	}
 	//16 login
-	else if (domain.indexOf("https://learn.tsinghua.edu.cn/f/login") != -1) {
+	else if (
+		domain.indexOf("https://learn.tsinghua.edu.cn/f/login") != -1 ||
+		domain.indexOf(
+			"https://learn.tsinghua.edu.cn/f/wlxt/index/course/student/index"
+		) != -1
+	) {
 		otheR =
 			`.bgcolor{background-color:${basic_color};}` +
 			`#loginDivId>div>div>span,#loginForm,#loginDivId{background-color:rgba(0,0,0,0.0);}` +
-			`div.title{color:${text_color1} !important;}` +
-			`body > div.header > div,body > div.header > div > div.right > div > a,.header,body > div.header > div > div.right > div,body > div.header > div > div.right > div > a > span,body > div.header > div > div.left > a > img,body > div.header > div,body > div.header > div > div.left > a,body > div.header > div > div.right > div > a > span,body > div.header > div > div.right{background-color:${color3} !important;}`;
+			`div.title,body > div.banner > div > div > div > div > span.teacher > span{color:${text_color1} !important;}` +
+			`div.right>*>*>*>*,div.right>*>*>*,body > div.header > div,body > div.header > div > div.right > div > a,.header,body > div.header > div > div.right > div,body > div.header > div > div.right > div > a > span,body > div.header > div > div.left > a > img,body > div.header > div,body > div.header > div > div.left > a,body > div.header > div > div.right > div > a > span,body > div.header > div > div.right{background-color:${color3} !important;}`;
 	}
 
 	//sum up
@@ -351,6 +366,7 @@
 
 			GM_setValue("colorSet", colorSet);
 		};
+		
 		var changeColor_css = `#changeColor{width:50px;height:50px;position:fixed;bottom:0px;left:0px;z-index:10;background-color:rgba(0,0,0,0.0);}`;
 		var ad = false;
 
