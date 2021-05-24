@@ -73,7 +73,7 @@
 			.bground{background-color:${basic_color};}`;
 		//top banner
 		var top_banner =
-			`#banner,#banner>*,#banner>*>*,#banner>*>*>*,#banner>*>*>*>*,#banner>*>*>*>*>*,#banner>*>*>*>*>*>*,#banner>*>*>*>*>*>*>*,#banner>*>*>*>*>*>*>*>*,#banner>*>*>*>*>*>*>*>*>*,#filtericon>div>div.logo-cot,#filtericon>div>div.logo-cot>div>div.up-img-info>p>*{background-color:${side_color};color:${text_color1};}` +
+			`#banner,#banner>*,#banner>*>*,#banner>*>*>*,#banner>*>*>*>*,#banner>*>*>*>*>*,#banner>*>*>*>*>*>*,#banner>*>*>*>*>*>*>*,#banner>*>*>*>*>*>*>*>*,#banner>*>*>*>*>*>*>*>*>*,#filtericon>div>div.logo-cot,#filtericon>div>div.logo-cot>div>div.up-img-info>p>*{background-color:${side_color} !important;color:${text_color1};}` +
 			`#mail,#stmail,#stmail > span{color:${text_color1} !important; background-color:${color3} !important;}` +
 			`#main>*:hover,#mail:hover,#stmail:hover,#stmail>span:hover{background-color:${color3} !important;color:${text_color2} !important;}`;
 		//coursename
