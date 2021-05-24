@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         wlxt_theme_tool
-// @version      1.5
+// @version      1.6
 // @description  customize your wlxt
 // @author       if
 // @updateURL    https://yifeeeeei.github.io/Monkey/wlxt_theme_tool.user.js
@@ -18,6 +18,7 @@
 //1.3 change name to "wlxt_theme_tool", allowing color customization
 //1.4 login page debug & change_color_icon debug, new_email page debug. change_color_icon will now show properly,and,there wont be an extra 'setcolor' btn on that document thing...
 //1.5 debug
+//1.6 debug
 
 (function () {
 	"use strict";
@@ -138,7 +139,7 @@
             #kcmid{color:${text_color1}!important;background-color:${basic_color};border-style:none none solid none;border-width:2px;border-color:${text_color1};}` + //past
 			`#open>div{background-color:${basic_color};}
 	        #tabbox{background-color:${basic_color} !important;}
-	        #tabbox>ul>li{background-color:${side_color};}
+	        #tabbox>ul>li{background-color:${basic_color};}
 	        #kcm{background-color:${side_color}; color:${text_color1} !important;}
 	        #select2-kcflmselect-container,#select2-dwmcselect-container{line-height:26px !important}
 	        .con .item-global{height:210px;}
@@ -150,7 +151,8 @@
 	        body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.name,body>div.nav>div#myTabContent>div#course2>dl.boxdetail>div#nextsuojiaocourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.name,
 			body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.stud>span.unsee,body>div.nav>div#myTabContent>div#course2>dl.boxdetail>div#nextsuojiaocourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.stud>span.unsee{color:${text_color1};}` + //text
 			`html>body>div.bground{background-color:${basic_color};}` + //登录页面
-			`.chongxin{background-color:${color3};}`;
+			`.chongxin{background-color:${color3};}`+
+			`body > div.header > div{background-color:${side_color} !important;}`;
 	}
 	//2 HomePage
 	else if (
@@ -160,7 +162,7 @@
 	) {
 		otheR = `#tabbox{background-color:${basic_color} !important;padding-bottom:2px !important;}
 		    #discuss>dd>ul>li>div>div>span>a>div>p,#tabbox>ul>li{height:30px !important;color:${text_color2}}
-		    #tabbox>ul>li.active{background-color:${color3} !important;}`;
+		    #tabbox>ul>li.active{background-color:${basic_color} !important;}`;
 	}
 	//3 Notices
 	else if (
