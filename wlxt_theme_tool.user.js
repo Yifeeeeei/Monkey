@@ -127,7 +127,7 @@
 	}
 	function getBasicColor()
 	{
-		var tup = [0,0,0]
+		var tup = [255,255,255]
 		var rgbNumbers = basic_color.match(/[0-9]+/g)
 		if (rgbNumbers.length == 3)
 		{
