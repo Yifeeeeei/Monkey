@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         wlxt_theme_tool
-// @version      1.6
+// @version      1.7
 // @description  customize your wlxt
 // @author       if
 // @updateURL    https://yifeeeeei.github.io/Monkey/wlxt_theme_tool.user.js
@@ -19,6 +19,7 @@
 //1.4 login page debug & change_color_icon debug, new_email page debug. change_color_icon will now show properly,and,there wont be an extra 'setcolor' btn on that document thing...
 //1.5 debug
 //1.6 debug
+//1.7 auto set mainpage text color(notice,document and works)
 
 (function () {
 	"use strict";
@@ -112,11 +113,48 @@
 	changeBackground();
 
 	var otheR = ``;
+	function colorFix(inColor)
+	{
+		while (inColor > 255)
+		{
+			inColor = inColor - 255
+		}
+		while(inColor <0)
+		{
+			inColor +=255
+		}
+		return inColor
+	}
+	function getBasicColor()
+	{
+		var tup = [0,0,0]
+		var rgbNumbers = basic_color.match(/[0-9]+/g)
+		if (rgbNumbers.length == 3)
+		{
+			for (var i = 0; i < 3; i++)
+			{
+				rgbNumbers[i] = parseInt(rgbNumbers[i])
+			}
+			tup = [rgbNumbers[0],rgbNumbers[1],rgbNumbers[2]]
+		}
+		var gb_color1 = [colorFix(tup[0] + 0xf7-0xff),colorFix(tup[1] + 0x89-0xff),colorFix(tup[2]+0x13-0xff)]
+		var gb_color2 = [colorFix(tup[0] + 0x4f-0xff),colorFix(tup[1] + 0xc2-0xff),colorFix(tup[2]+0xb9-0xff)]
+		var gb_color3 = [colorFix(tup[0] + 0x8f-0xff),colorFix(tup[1] + 0xca-0xff),colorFix(tup[2]+0x6e-0xff)]
+
+		gb_color1 = "rgb("+gb_color1[0]+","+gb_color1[1]+","+gb_color1[2]+")"
+		gb_color2 = "rgb("+gb_color2[0]+","+gb_color2[1]+","+gb_color2[2]+")"
+		gb_color3 = "rgb("+gb_color3[0]+","+gb_color3[1]+","+gb_color3[2]+")"
+		return[gb_color1,gb_color2,gb_color3]
+		
+	}
 
 	//1 MainPage
 	if (
 		domain == "https://learn.tsinghua.edu.cn/f/wlxt/index/course/student/"
 	) {
+		
+		var gbs = getBasicColor()
+		
 		otheR =
 			`.boxdetail dd.stu{border-color: ${basic_color};}` +
 			`.clearfix.stu {background-color:${basic_color};}` +
@@ -152,7 +190,8 @@
 			body>div.nav>div#myTabContent>div#course1>dl.boxdetail>div#suoxuecourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.stud>span.unsee,body>div.nav>div#myTabContent>div#course2>dl.boxdetail>div#nextsuojiaocourse>dd.stu>div.fl>div.stu>ul>*>a.uuuhhh>span.stud>span.unsee{color:${text_color1};}` + //text
 			`html>body>div.bground{background-color:${basic_color};}` + //登录页面
 			`.chongxin{background-color:${color3};}`+
-			`body > div.header > div{background-color:${side_color} !important;}`;
+			`body > div.header > div{background-color:${side_color} !important;}` +
+			`.orange{color:${gbs[0]} !important;} .boxdetail .state .wee.stud{color:${gbs[1]} !important;} .boxdetail .state .green.stud{color:${gbs[2]} !important;}`;
 	}
 	//2 HomePage
 	else if (
