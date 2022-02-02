@@ -825,7 +825,7 @@ notes: if some other guy wants to modify this script, this may help with your re
                 0.3
             )});}`;
             if (server_code == 1) {
-                index_card_style = `.lesson-cardT .box-card.style${i} {background-image: linear-gradient(to bottom right, ${
+                index_card_style = `.lesson-cardT .box-card.style${i},.lesson-cardS .box-card.style${i} {background-image: linear-gradient(to bottom right, ${
                     color_set.card_color_list[0][i]
                 }, ${colorGradient(
                     color_set.card_color_list[0][i],
@@ -843,19 +843,23 @@ notes: if some other guy wants to modify this script, this may help with your re
         // document.querySelector("")
         // document.querySelector("")
         if (server_code == 1) {
-            GM_addStyle(`.lesson-cardT .mark {
+            GM_addStyle(`.lesson-cardT .mark,.lesson-cardS .mark {
                 position: absolute;
                 top: 0;
                 right: 0;
                 height: 100%;
                 z-index: 5;
             }
-            .lesson-cardT .mark img {
+            .lesson-cardT .mark img,.lesson-cardS .mark {
                 display: block;
                 height: 100%;
             }`);
             waitForKeyElements(
                 '.lesson-cardT',
+                changeWaterMark_code1
+            );
+            waitForKeyElements(
+                '.lesson-cardS',
                 changeWaterMark_code1
             );
         } else {
