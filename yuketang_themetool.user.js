@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         雨课堂配色脚本
-// @version      1.1.2
+// @version      1.1.3
 // @description  手动设置雨课堂配色+每日问候
 // @author       if
 // namespace     yekutang.if
@@ -30,6 +30,7 @@
 //         modify      : added run-at document-start to settle the 'blink of white' issue. However, this caused the css stucture to change, so i added a lot more '!important'. This might have created much more potential bugs for the future.
 // v1.1.1: modify      : removed run-at document-start attribute, just to much to change
 // v1.1.2: modify      : enable huanghe yuketang (well, mostly this is just a test for auto-update)
+// v1.1.3: modify      : the cardS problem
 /*
 notes: if some other guy wants to modify this script, this may help with your reading
 1. You know what they say about '!important', never use them in your plug-ins. Well, consider this a very BAD example.
@@ -63,22 +64,22 @@ notes: if some other guy wants to modify this script, this may help with your re
     function waitForKeyElements(
         selectorTxt,
         /* Required: The jQuery selector string that
-                                   specifies the desired element(s).
-                               */
+                                       specifies the desired element(s).
+                                   */
         actionFunction,
         /* Required: The code to run when elements are
-                                   found. It is passed a jNode to the matched
-                                   element.
-                               */
+                                       found. It is passed a jNode to the matched
+                                       element.
+                                   */
         bWaitOnce,
         /* Optional: If false, will continue to scan for
-                                   new elements even after the first match is
-                                   found.
-                               */
+                                       new elements even after the first match is
+                                       found.
+                                   */
         iframeSelector
         /* Optional: If set, identifies the iframe to
-                                   search.
-                               */
+                                       search.
+                                   */
     ) {
         var targetNodes, btargetsFound;
 
@@ -824,50 +825,48 @@ notes: if some other guy wants to modify this script, this may help with your re
                 color_set.card_color_list[0][i],
                 0.3
             )});}`;
-            if (server_code == 1) {
-                index_card_style = `.lesson-cardT .box-card.style${i},.lesson-cardS .box-card.style${i} {background-image: linear-gradient(to bottom right, ${
-                    color_set.card_color_list[0][i]
-                }, ${colorGradient(
-                    color_set.card_color_list[0][i],
-                    0.3
-                )});}`;
-            }
+            // if (server_code == 1) {
+            //     index_card_style = `.lesson-cardT .box-card.style${i},.lesson-cardS .box-card.style${i} {background-image: linear-gradient(to bottom right, ${
+            //         color_set.card_color_list[0][i]
+            //     }, ${colorGradient(
+            //         color_set.card_color_list[0][i],
+            //         0.3
+            //     )});}`;
 
             GM_addStyle(index_card_style);
         }
+
         // card watermark
         GM_addStyle(
             '.mark > img {opacity:0.5; transform:scale(0.5);}'
         );
 
-        // document.querySelector("")
-        // document.querySelector("")
-        if (server_code == 1) {
-            GM_addStyle(`.lesson-cardT .mark,.lesson-cardS .mark {
-                position: absolute;
-                top: 0;
-                right: 0;
-                height: 100%;
-                z-index: 5;
-            }
-            .lesson-cardT .mark img,.lesson-cardS .mark {
-                display: block;
-                height: 100%;
-            }`);
-            waitForKeyElements(
-                '.lesson-cardT',
-                changeWaterMark_code1
-            );
-            waitForKeyElements(
-                '.lesson-cardS',
-                changeWaterMark_code1
-            );
-        } else {
-            waitForKeyElements(
-                '#pane-student > div > div > div > div > div.mark > img',
-                changeWaterMark_code0
-            );
-        }
+        // if (server_code == 1) {
+        //     GM_addStyle(`.lesson-cardT .mark,.lesson-cardS .mark {
+        //         position: absolute;
+        //         top: 0;
+        //         right: 0;
+        //         height: 100%;
+        //         z-index: 5;
+        //     }
+        //     .lesson-cardT .mark img,.lesson-cardS .mark {
+        //         display: block;
+        //         height: 100%;
+        //     }`);
+        //     waitForKeyElements(
+        //         '.lesson-cardT',
+        //         changeWaterMark_code1
+        //     );
+        //     waitForKeyElements(
+        //         '.lesson-cardS',
+        //         changeWaterMark_code1
+        //     );
+        // } else {
+        waitForKeyElements(
+            '#pane-student > div > div > div > div > div.mark > img',
+            changeWaterMark_code0
+        );
+        // }
     }
     if (user_settings.enable_index_page) {
         // that |协同| tag
@@ -1961,7 +1960,6 @@ notes: if some other guy wants to modify this script, this may help with your re
         );
         hideUserSettings();
     }
-
 
     function hideUserSettings() {
         document
