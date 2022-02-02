@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         yuketang_themetool
-// @version      1.0.0
-// @description  customize yuketang
+// @name         雨课堂配色脚本
+// @version      1.1.1
+// @description  手动设置雨课堂配色+每日问候
 // @author       if
 // namespace     yekutang.if
 // @updateURL    https://yifeeeeei.github.io/Monkey/yuketang_themetool.user.js
@@ -15,6 +15,8 @@
 // @grant        GM_deleteValue
 // @grant        GM_xmlhttpRequest
 // @connect      chp.shadiao.app
+// @connect      v1.hitokoto.cn
+// @connect      api.btstu.cn
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js
 // ==/UserScript==
 
@@ -22,15 +24,17 @@
 
 // updates
 // v0.1: basic functions
-// v1.0.0: well, basic css style, 彩虹屁, birthday surprise, that would work.
-
+// v1.0.0: well, basic css style, rainbowfart, birthday surprise, that would work.
+// v1.1.0: new feature : the rainbowfart section is now greeting section, with four options provided: zhuangbi, rainbowfart, chickensoup and none.
+//         modify      : added run-at document-start to settle the 'blink of white' issue. However, this caused the css stucture to change, so i added a lot more '!important'. This might have created much more potential bugs for the future.
+// v1.1.1: modify      : removed run-at document-start attribute, just to much to change
 /*
 notes: if some other guy wants to modify this script, this may help with your reading
 1. You know what they say about '!important', never use them in your plug-ins. Well, consider this a very BAD example.
 2. I tried to add more comments to this script, but the structure of the page is just to complicated to describe. So, my suggestion is, just comment the codes you want to look into, then find out what it does.
 3. Tamper Monkey cannot detect the domain change here, this is a feature I so far haven't seen on any other websites. So I can't just if url1, else if url2. That's why I inject the css sheet needed for all pages once and for all. Well, but I left comments that shows which chunk of codes is made for which page.
 4. Cards on that index page have class name 'el-cards', but cards on that specific course page have the same class name. Might cause some trouble.
-5. All color are in a format of #XXX or #XXXXXX.
+5. All color are in a format of #XXX or #XXXXXX, well, mostly in #XXXXXX.
 6. DO NOT TOUCH THE WAITFORKEYELEMENTS FUNCTION!
 */
 
@@ -155,14 +159,9 @@ notes: if some other guy wants to modify this script, this may help with your re
     }
 
     function changeWaterMark_code0(jNode) {
-        // console.log(jNode.inner_text);
-        // var mark = jNode.firstChild;
-        // console.log(mark.getAttribute('src'));
         var marks = document.querySelectorAll(
             '#pane-student > div > div > div > div > div.mark>img'
         );
-        console.log(marks.length);
-        // console.log(marks[0].innerHTML);
         for (var i = 0; i < marks.length; i++) {
             if (!marks[i].hasAttribute('set')) {
                 marks[i].setAttribute(
@@ -177,10 +176,6 @@ notes: if some other guy wants to modify this script, this may help with your re
     }
 
     function changeWaterMark_code1(jNode) {
-        console.log(
-            document.querySelectorAll('.lesson-cardT')
-            .length
-        );
         var card_list =
             document.querySelectorAll('.lesson-cardT');
         for (var i = 0; i < card_list.length; i++) {
@@ -248,7 +243,6 @@ notes: if some other guy wants to modify this script, this may help with your re
             g = parseInt(original_color.slice(3, 5), 16);
             b = parseInt(original_color.slice(5, 7), 16);
             max_hex_color = parseInt('FF', 16);
-            console.log(r, g, b);
             if (ratio > 0) {
                 r =
                     r +
@@ -265,7 +259,6 @@ notes: if some other guy wants to modify this script, this may help with your re
                 b = b + parseInt(ratio * b);
             }
         }
-        console.log(r, g, b);
 
         return (
             '#' +
@@ -281,24 +274,23 @@ notes: if some other guy wants to modify this script, this may help with your re
         enable_left_menu: true,
         enable_index_page: true,
         enable_card_style: true,
-        enable_rainbow_fart: true,
+        enable_greeting: 1,
         enable_developing_features: true,
     };
     // color set用来存储颜色配置
     var default_color_set = {
-        background_color_main: '#F8C3CD',
-        background_color_secondary: '#FEDFE1',
-        background_color_subordinate: '#D7C4BB',
-        text_color_main: '#734338',
-        text_color_secondary: '#F17C67',
-        text_color_subordinate: '#554236',
+        background_color_main: '#F8C3CD', // 退红   TAIKOH
+        background_color_secondary: '#FEDFE1', // 桜     SAKURA
+        background_color_subordinate: '#D7C4BB', // 灰桜   HAIZAKURA
+        text_color_main: '#734338', // 海老茶 EBICHA
+        text_color_secondary: '#E83015', // 猩猩绯 SYOJYOHI
+        text_color_subordinate: '#9E7A7A', // 梅鼠   UMENEZUMI
         card_color_list: [
             [
-                '#B54434',
-                '#CC543A',
-                '#FB966E',
-                '#ED784A',
-                '#D75455',
+                '#00AA90', // 水浅葱 MIZUASAGI
+                '#7B90D2', // 红碧   BENIMIDORI
+                '#00896C', // 青竹   AOTAKE
+                '#3A8FB7', // 千草   CHIGUSA
             ],
         ],
     };
@@ -341,8 +333,6 @@ notes: if some other guy wants to modify this script, this may help with your re
         } else {
             color_set = default_color_set;
         }
-        console.log(tmp_user_settings_dic);
-        console.log(tmp_color_dic);
     }
     loadUserSettings();
 
@@ -353,7 +343,6 @@ notes: if some other guy wants to modify this script, this may help with your re
             month: 2,
             day: 15,
         };
-        console.log(date.getMonth() + 1, date.getDate());
         if (
             date.getMonth() + 1 == birthday.month &&
             date.getDate() == birthday.day
@@ -796,7 +785,6 @@ notes: if some other guy wants to modify this script, this may help with your re
 
     if (user_settings.enable_left_menu) {
         ('left menu');
-        console.log('left_menu enabled');
         // the menu on the left
         var index_left_menu_style = `.left__menu  {background-color:${color_set.background_color_subordinate} !important; color :${color_set.text_color_secondary} !important;}`;
         GM_addStyle(index_left_menu_style);
@@ -823,15 +811,11 @@ notes: if some other guy wants to modify this script, this may help with your re
     ('index page');
     if (user_settings.enable_card_style) {
         ('card');
-        // basic card properties
-        // var index_card_selector = '.lesson-cardS .box-card.style1';
-        // var index_card_css = `{background-image: linear-gradient(to bottom right, red,#CCCCCC);}`;
-        // var index_card_style =
-        //     index_card_selector + index_card_css;
-        // GM_addStyle(index_card_style);
 
         // card color
-        for (var i = 0; i < 5; i++) {
+        for (
+            var i = 0; i < color_set.card_color_list[0].length; i++
+        ) {
             var index_card_style = `.lesson-cardS .box-card.style${i} {background-image: linear-gradient(to bottom right, ${
                 color_set.card_color_list[0][i]
             }, ${colorGradient(
@@ -880,8 +864,6 @@ notes: if some other guy wants to modify this script, this may help with your re
         }
     }
     if (user_settings.enable_index_page) {
-        // var card_water_marks = document.querySelectorAll(".mark");
-        // console.log(card_water_marks.length);
         // that |协同| tag
         var index_xietong_icon_style = `.layoutHeader .synergy {color: ${color_set.text_color_secondary}; border-color:${color_set.text_color_secondary}}`;
         GM_addStyle(index_xietong_icon_style);
@@ -890,7 +872,7 @@ notes: if some other guy wants to modify this script, this may help with your re
         GM_addStyle(index_h3_style);
         ('background');
         // main background, the one carries the cards
-        var index_background_style = `.index__view{background-color: ${color_set.background_color_main}; color: ${color_set.text_color_main} !important;};`;
+        var index_background_style = `.index__view{background-color: ${color_set.background_color_main} !important; color: ${color_set.text_color_main} !important;};`;
         GM_addStyle(index_background_style);
 
         ('top tab');
@@ -961,7 +943,7 @@ notes: if some other guy wants to modify this script, this may help with your re
         // 文件名称那一栏
         var repo_cloud_filenamebar_style = `.el-table th, .el-table tr {background-color: ${color_set.background_color_main} !important ; color:${color_set.text_color_main}}`;
         GM_addStyle(repo_cloud_filenamebar_style);
-        // 上传和新文件夹两个按钮 WARNING used a maybe a seq number, need to test it before release
+        // 上传和新文件夹两个按钮
         var repo_cloud_upload_and_newfile_button_style = `#app > div.viewContainer > section > section.repository__container > div > div.cloud-right-wrapper > div.button-wrapper.font14 > div.text-left.upload-handle-wrapper > button,.file-upload-button-wrapper .yupan-upload-button,.cloud-wrapper .cloud-right-wrapper .button-wrapper .upload-handle-wrapper .button-default-border{background-color:${color_set.background_color_main} !important;border: 1px solid ${color_set.text_color_secondary} !important;color: ${color_set.text_color_secondary} !important;background-color:${color_set.background_color_main};}`;
         GM_addStyle(
             repo_cloud_upload_and_newfile_button_style
@@ -992,16 +974,16 @@ notes: if some other guy wants to modify this script, this may help with your re
         // active button
         var log_active_button_style = `.studentLog__view .log .el-radio-group .el-radio-button.is-active span {color:${color_set.text_color_secondary} !important; border-color:${color_set.text_color_secondary} !important;background-color:${color_set.background_color_main} !important;}`;
         GM_addStyle(log_active_button_style);
-        var log_upper_banner_active_style = `.studentLog__view .el-tabs.mainTab .el-tabs__header .el-tabs__nav .el-tabs__item.is-active{color:${color_set.text_color_secondary};!important}`;
+        var log_upper_banner_active_style = `.studentLog__view .el-tabs.mainTab .el-tabs__header .el-tabs__nav .el-tabs__item.is-active{color:${color_set.text_color_secondary}!important}`;
         GM_addStyle(log_upper_banner_active_style);
         // inactive buttons
         var log_inactive_button_style = `.studentLog__view .log .el-radio-group .el-radio-button span {color:${color_set.text_color_main} !important;  border-color:${color_set.text_color_main} !important;background-color:${color_set.background_color_main} !important;}`;
         GM_addStyle(log_inactive_button_style);
         var log_a_little_shadow_style = `.el-radio-button__orig-radio:checked+.el-radio-button__inner {box-shadow: -1px 0 0 0 ${color_set.text_color_secondary}  !important;}`;
         GM_addStyle(log_a_little_shadow_style);
-        var log_upper_banner_inactive_style = `.studentLog__view .el-tabs.mainTab .el-tabs__header .el-tabs__nav .el-tabs__item{color:${color_set.text_color_main}; !important}`;
+        var log_upper_banner_inactive_style = `.studentLog__view .el-tabs.mainTab .el-tabs__header .el-tabs__nav .el-tabs__item{color:${color_set.text_color_main} !important}`;
         GM_addStyle(log_upper_banner_inactive_style);
-        var log_upper_banner_btns_patch_style = `.studentLog__view .el-tabs.mainTab .el-tabs__header .el-tabs__nav .el-tabs__item{color:${color_set.text_color_subordinate}; !important}`;
+        var log_upper_banner_btns_patch_style = `.studentLog__view .el-tabs.mainTab .el-tabs__header .el-tabs__nav .el-tabs__item{color:${color_set.text_color_subordinate} !important}`;
         GM_addStyle(log_upper_banner_btns_patch_style);
         // content
         var log_content_style = `.studentCard .end ,.studentCard .date-box,.studentLog__view .log .el-tabs .el-tabs__content>div,.studentLog__view .log .el-tabs .el-tabs__content>div>div {background-color: ${color_set.background_color_main} !important; color: ${color_set.text_color_main} !important;}`;
@@ -1017,15 +999,15 @@ notes: if some other guy wants to modify this script, this may help with your re
         ('specific class'); //点进去，查看一个课堂的内容
         // top banner
         var sc_top_banner_style = `.normalText{color:${color_set.text_color_subordinate} !important;}
-    .student_learn_header{background:${color_set.background_color_main} !important;}
-    .common_header .return svg, .common_header .return .returnText {color: ${color_set.text_color_secondary}  !important}`;
+        .student_learn_header{background:${color_set.background_color_main} !important;}
+        .common_header .return svg, .common_header .return .returnText {color: ${color_set.text_color_secondary}  !important}`;
         GM_addStyle(sc_top_banner_style);
         // content of a class: left, in the middle
         var sc_left_middle_style = `.el-card{background-color:${color_set.background_color_main};}
-    .module_ppt .ppt .el-card__body .ppt_info,.module_ppt .ppt .el-card__body .ppt_actions  {color:${color_set.text_color_main};}
-    .module_ppt .ppt .el-card__header .playback{color:${color_set.text_color_secondary};}
-    .module_ppt .ppt .el-card__body .swiper_box .swiper-container .swiper-pagination-bullets .swiper-pagination-bullet-active{background:${color_set.text_color_secondary};}
-    .module_ppt .ppt .el-card__body .swiper_box .swiper-slide.swiper-slide-active img { border: 2px solid ${color_set.text_color_secondary};}`;
+        .module_ppt .ppt .el-card__body .ppt_info,.module_ppt .ppt .el-card__body .ppt_actions  {color:${color_set.text_color_main};}
+        .module_ppt .ppt .el-card__header .playback{color:${color_set.text_color_secondary};}
+        .module_ppt .ppt .el-card__body .swiper_box .swiper-container .swiper-pagination-bullets .swiper-pagination-bullet-active{background:${color_set.text_color_secondary};}
+        .module_ppt .ppt .el-card__body .swiper_box .swiper-slide.swiper-slide-active img { border: 2px solid ${color_set.text_color_secondary};}`;
         GM_addStyle(sc_left_middle_style);
         // brief: right, in the middle
         var sc_right_middle_style = `.lesson_info .statistics_classify .statistics_item span, .lesson_info .noLessonInfo p,.lesson_info .statistics_classify .statistics_item p, .lesson_info .lesson_main .lesson_main_left .exercises_box p{color:${color_set.text_color_main} !important;}`;
@@ -1039,12 +1021,13 @@ notes: if some other guy wants to modify this script, this may help with your re
 
         ('discussion section');
         var sc_discussion_section_style = `
-        .new-discussion-warp .top_search, .el-input__inner{background-color:${color_set.background_color_secondary};border:2px; color:${color_set.text_color_subordinate};};
+        .new-discussion-warp .top_search, .el-input__inner{background-color:${color_set.background_color_secondary} !important;border:2px !important; color:${color_set.text_color_subordinate};};
         .new-discussion-warp .top_search .search-btn::after{background-color:${color_set.background_color_main};}
-        .new-discussion-warp .top_search .search-btn .icon {color:${color_set.text_color_secondary};}
+        .new-discussion-warp .top_search .search-btn .icon {color:${color_set.text_color_secondary} !important;}
         div.new-discussion-warp .container{background-color:${color_set.background_color_secondary} !important;}
         .new-discussion-warp .container-top .container-top-box .el-radio-group .el-radio-button.is-active span  {color:${color_set.text_color_secondary} !important; border-color:${color_set.text_color_secondary} !important;background-color:${color_set.background_color_main} !important;}
         .new-discussion-warp .container-top .container-top-box .el-radio-group .el-radio-button .el-radio-button__inner {color:${color_set.text_color_main} !important;  border-color:${color_set.text_color_main} !important;background-color:${color_set.background_color_main} !important;}
+        .new-discussion-warp .top_discuss {background-color:${color_set.text_color_secondary} !important; color:${color_set.background_color_main} !important;}
         `;
         GM_addStyle(sc_discussion_section_style);
         ('announcements');
@@ -1058,7 +1041,7 @@ notes: if some other guy wants to modify this script, this may help with your re
         GM_addStyle(sc_announcements_section_style);
         ('group');
         var sc_group_section_style = `
-        .webview__page .page__nav div {color:${color_set.text_color_main}; border-color:${color_set.text_color_main}};
+        .webview__page .page__nav div {color:${color_set.text_color_main} !important; border-color:${color_set.text_color_main} !important;};
         `;
         GM_addStyle(sc_group_section_style);
         ('score sheet');
@@ -1075,7 +1058,7 @@ notes: if some other guy wants to modify this script, this may help with your re
         .studentmark-wrapper .personal-mark .scheme .scheme-list .item .common,
         .studentmark-wrapper .personal-mark .scheme .scheme-list .item .num
         {color:${color_set.text_color_main} !important;}
-        .studentmark-wrapper .list-box .list-detail .left-study-unit .unit-title .dot,
+        .studentmark-wrapper .list-box .list-detail .left-study-unit .unit-title .dot,.studentmark-wrapper .list-box .list-detail .left-study-unit .unit-title .dot
         {
             background-color:${
                 color_set.text_color_secondary
@@ -1100,46 +1083,62 @@ notes: if some other guy wants to modify this script, this may help with your re
         `;
         GM_addStyle(sc_score_sheet_style);
     }
-    // 彩虹屁：https://chp.shadiao.app/api.php
-    function addRainbowFart(jNode) {
-        console.log('一');
-        var eltab_whole = document.querySelector(
-            '#app > div.viewContainer > div > div.el-tabs.el-tabs--top'
-        );
-        var reference_node = document.querySelector(
-            '#app > div.viewContainer > div > div.el-tabs.el-tabs--top > div.el-tabs__content'
-        );
 
-        if (trigger_birthday) {
-            var new_node = document.createElement('div');
-            new_node.setAttribute('id', 'rainbow_fart');
-            var tmp_date = new Date();
-            var age =
-                parseInt(tmp_date.getFullYear()) - 2001;
-            new_node.innerHTML = `${age}岁的fyp生日快乐🎂`;
-            eltab_whole.insertBefore(
-                new_node,
-                reference_node
-            );
-            GM_addStyle(
-                'div#rainbow_fart{font-size:2em; margin-top:1em;margin-left:1em; margin-right:1em;}'
-            );
-            return;
-        }
-        var got = false;
+    // 小清新：https://v1.hitokoto.cn/
+    // 彩虹屁：https://chp.shadiao.app/api.php
+    // 毒鸡汤：https://api.btstu.cn/yan/api.php
+    function insertZhuangBiStr(
+        eltab_whole,
+        reference_node
+    ) {
+        console.log('zhuangbi');
         GM_xmlhttpRequest({
-            method: 'post',
+            method: 'get',
+            url: 'https://v1.hitokoto.cn/',
+            headers: {
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
+            },
+            onload: function(res) {
+                if (res.status == 200) {
+                    json_dic = JSON.parse(res.responseText);
+                    var new_node =
+                        document.createElement('div');
+                    new_node.setAttribute(
+                        'id',
+                        'us_greeting'
+                    );
+                    new_node.innerHTML =
+                        json_dic.hitokoto +
+                        '    ' +
+                        '——' +
+                        json_dic.from;
+                    eltab_whole.insertBefore(
+                        new_node,
+                        reference_node
+                    );
+                    GM_addStyle(
+                        'div#us_greeting{font-size:2em; margin-top:1em;margin-left:1em; margin-right:1em;}'
+                    );
+                } else {
+                    console.log('error');
+                }
+            },
+        });
+    }
+
+    function insertRainbowFartStr(
+        eltab_whole,
+        reference_node
+    ) {
+        GM_xmlhttpRequest({
+            method: 'get',
             url: 'https://chp.shadiao.app/api.php',
             headers: {
                 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
             },
             onload: function(res) {
-                if (res.status == 200 && !got) {
-                    console.log('success');
-
-                    console.log(res.responseText);
-                    // var jitang = res.responseXML.querySelector("#text");
-                    // console.log(jitang.text);
+                if (res.status == 200) {
+                    console.log('rainbowfart');
                     var new_node =
                         document.createElement('div');
                     new_node.setAttribute(
@@ -1154,23 +1153,100 @@ notes: if some other guy wants to modify this script, this may help with your re
                     GM_addStyle(
                         'div#rainbow_fart{font-size:2em; margin-top:1em;margin-left:1em; margin-right:1em;}'
                     );
-                    got = true;
                 } else {
                     console.log('error');
                 }
             },
         });
     }
-    // console.log('before');
-    if (user_settings.enable_rainbow_fart) {
-        console.log('trying');
 
-        waitForKeyElements(
-            '#app > div.viewContainer > div > div.el-tabs.el-tabs--top',
-            addRainbowFart
-        );
+    function insertChickenSoupStr(
+        eltab_whole,
+        reference_node
+    ) {
+        GM_xmlhttpRequest({
+            method: 'get',
+            url: 'https://api.btstu.cn/yan/api.php',
+            headers: {
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
+            },
+            onload: function(res) {
+                if (res.status == 200) {
+                    console.log('chicksoup');
+                    var new_node =
+                        document.createElement('div');
+                    new_node.setAttribute(
+                        'id',
+                        'us_greeting'
+                    );
+                    new_node.innerHTML = res.responseText;
+                    eltab_whole.insertBefore(
+                        new_node,
+                        reference_node
+                    );
+                    GM_addStyle(
+                        'div#us_greeting{font-size:2em; margin-top:1em;margin-left:1em; margin-right:1em;}'
+                    );
+                } else {
+                    console.log('error');
+                }
+            },
+        });
     }
-    // console.log('after');
+
+    function addGreeting(jNode) {
+        var eltab_whole = document.querySelector(
+            '#app > div.viewContainer > div > div.el-tabs.el-tabs--top'
+        );
+        var reference_node = document.querySelector(
+            '#app > div.viewContainer > div > div.el-tabs.el-tabs--top > div.el-tabs__content'
+        );
+
+        if (trigger_birthday) {
+            var new_node = document.createElement('div');
+            new_node.setAttribute('id', 'us_greeting');
+            var tmp_date = new Date();
+            var age =
+                parseInt(tmp_date.getFullYear()) - 2001;
+            new_node.innerHTML = `${age}岁的fyp生日快乐🎂`;
+            eltab_whole.insertBefore(
+                new_node,
+                reference_node
+            );
+            GM_addStyle(
+                'div#us_greeting{font-size:2em; margin-top:1em;margin-left:1em; margin-right:1em;}'
+            );
+            return;
+        }
+        switch (user_settings.enable_greeting) {
+            case 1:
+                insertZhuangBiStr(
+                    eltab_whole,
+                    reference_node
+                );
+                break;
+            case 2:
+                insertRainbowFartStr(
+                    eltab_whole,
+                    reference_node
+                );
+                break;
+            case 3:
+                insertChickenSoupStr(
+                    eltab_whole,
+                    reference_node
+                );
+                break;
+            default:
+                break;
+        }
+    }
+    // Greeting
+    waitForKeyElements(
+        '#app > div.viewContainer > div > div.el-tabs.el-tabs--top',
+        addGreeting
+    );
+
     /*
         !----------------------------------------------!    
         !     WARNING: really nasty part below!        !
@@ -1552,21 +1628,7 @@ notes: if some other guy wants to modify this script, this may help with your re
                     ${color_set.card_color_list[0][3]}
                 </span>
         </div>
-        <div id="card_style_colors" class="user_script_user_settings one_selection">
-            <span>卡片颜色 5</span>
-            <span id="ususcc_card_color_4" class="user_script_user_settings_change_color" onclick="setColorValueOf(this)" style="
-                        border: 2px solid black;
-                        border-radius: 4px;
-                        background-color:${
-                            color_set.card_color_list[0][4]
-                        };
-                        color:${getColorAccordingToBackgroundColor(
-                            color_set.card_color_list[0][4]
-                        )};
-                    ">
-                    ${color_set.card_color_list[0][4]}
-                </span>
-        </div>
+       
         <div style="margin-left: 10px;margin-right: 10px;">
             左菜单<input type="checkbox" ${
                 user_settings.enable_left_menu
@@ -1588,23 +1650,46 @@ notes: if some other guy wants to modify this script, this may help with your re
                     : ''
             } id="us_index_page_checkbox" style="width:20px;height:20px;appearance:button;">
         </div>
-        <div>
-            <span style="color:red">彩</span>
-            <span style="color:green">虹</span>
-            <span style="color:blue">屁</span>
-            <input type="checkbox"  ${
-                user_settings.enable_rainbow_fart
-                    ? 'checked'
-                    : ''
-            } id="us_rainbow_fart_checkbox" style="width:20px;height:20px;appearance:button;" />
-        </div>
         <div style="margin-left: 10px;margin-right: 10px;">
-            其余功能<input type="checkbox" ${
+            其余页面<input type="checkbox" ${
                 user_settings.enable_developing_features
                     ? 'checked'
                     : ''
             } id="us_developing_features_checkbox" style="width:20px;height:20px;appearance:button;">
         </div>
+        <div>
+            <span style="color:#91B493">小</span>
+            <span style="color:#7BA23F">清</span>
+            <span style="color:#24936E">新</span>
+            <input type="radio" name="us_enable_greeting" ${
+                user_settings.enable_greeting == 1
+                    ? 'checked'
+                    : ''
+            } id="us_zhuang_bi_radio" style="width:20px;height:20px;appearance:button;" />&nbsp; &nbsp; 
+            <span style="color:red">彩</span>
+            <span style="color:orange">虹</span>
+            <span style="color:blue">屁</span>
+            <input type="radio" name="us_enable_greeting" ${
+                user_settings.enable_greeting == 2
+                    ? 'checked'
+                    : ''
+            } id="us_rainbow_fart_radio" style="width:20px;height:20px;appearance:button;" />&nbsp; &nbsp; 
+            <span style="color:#0089A7">毒</span>
+            <span style="color:#3A8FB7">鸡</span>
+            <span style="color:#2B5F75">汤</span>
+            <input type="radio" name="us_enable_greeting" ${
+                user_settings.enable_greeting == 3
+                    ? 'checked'
+                    : ''
+            } id="us_chicken_soup_radio" style="width:20px;height:20px;appearance:button;" />&nbsp; &nbsp; 
+            关闭问好
+            <input type="radio" name="us_enable_greeting" ${
+                user_settings.enable_greeting == 0
+                    ? 'checked'
+                    : ''
+            } id="us_no_greeting_radio" style="width:20px;height:20px;appearance:button;" />&nbsp; &nbsp; 
+        </div>
+        
         <div></div>
 
         <div id="usus_btn_set" class="user_script_user_settings">
@@ -1618,17 +1703,12 @@ notes: if some other guy wants to modify this script, this may help with your re
 
     function setUpUserSettings() {
         if (USER_SETTINGS_ADDED) return;
-        console.log('start');
-        // var body = document.getElementsByTagName("body")[0];
         var body = document.getElementById('app');
         var contain_div = document.createElement('div');
         contain_div.innerHTML = getUserSettinsHTML();
-        // body.innerHTML += getUserSettinsHTML();
-        // body.innerHTML += `<div>AAAAA</div>`;
         body.appendChild(contain_div);
         addFunctions();
 
-        console.log('done');
         USER_SETTINGS_ADDED = true;
         //bind keys
         var apply_btn =
@@ -1647,10 +1727,6 @@ notes: if some other guy wants to modify this script, this may help with your re
             hideUserSettings();
         };
     }
-    // console.log(getUserSettinsHTML());
-
-    // waitForKeyElements('body', addUserSettingBlockToBody);
-    // var user_settings_html = getUserSettinsHTML();
 
     ('some functions in the script tag, works for user settings');
 
@@ -1834,46 +1910,52 @@ notes: if some other guy wants to modify this script, this may help with your re
         color_set_dic.card_color_list[0][3] = document
             .getElementById('ususcc_card_color_3')
             .innerHTML.trim();
-        color_set_dic.card_color_list[0][4] = document
-            .getElementById('ususcc_card_color_4')
-            .innerHTML.trim();
-        console.log(1);
+
         user_settings_dic.enable_left_menu =
             document.getElementById(
                 'us_left_menu_checkbox'
             ).checked;
-        console.log(2);
         user_settings_dic.enable_card_style =
             document.getElementById(
                 'us_card_style_checkbox'
             ).checked;
-        console.log(3);
         user_settings_dic.enable_index_page =
             document.getElementById(
                 'us_index_page_checkbox'
             ).checked;
-        console.log(4);
-        user_settings_dic.enable_rainbow_fart =
-            document.getElementById(
-                'us_rainbow_fart_checkbox'
-            ).checked;
+        if (
+            document.getElementById('us_zhuang_bi_radio')
+            .checked
+        ) {
+            user_settings_dic.enable_greeting = 1;
+        } else if (
+            document.getElementById('us_rainbow_fart_radio')
+            .checked
+        ) {
+            user_settings_dic.enable_greeting = 2;
+        } else if (
+            document.getElementById('us_chicken_soup_radio')
+            .checked
+        ) {
+            user_settings_dic.enable_greeting = 3;
+        } else if (
+            document.getElementById('us_no_greeting_radio')
+            .checked
+        ) {
+            user_settings_dic.enable_greeting = 0;
+        }
         user_settings_dic.enable_developing_features =
             document.getElementById(
                 'us_developing_features_checkbox'
             ).checked;
-        console.log(5);
         GM_setValue('yuketang_color_set', color_set_dic);
         GM_setValue(
             'yuketang_user_settings',
             user_settings_dic
         );
-        console.log(color_set_dic, user_settings_dic);
         hideUserSettings();
     }
 
-    // var tmp_settings_dic = {
-
-    // };
 
     function hideUserSettings() {
         document
