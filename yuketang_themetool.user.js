@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         雨课堂配色脚本
-// @version      1.1.3
+// @version      1.1.4
 // @description  手动设置雨课堂配色+每日问候
 // @author       if
 // namespace     yekutang.if
@@ -29,8 +29,9 @@
 // v1.1.0: new feature : the rainbowfart section is now greeting section, with four options provided: zhuangbi, rainbowfart, chickensoup and none.
 //         modify      : added run-at document-start to settle the 'blink of white' issue. However, this caused the css stucture to change, so i added a lot more '!important'. This might have created much more potential bugs for the future.
 // v1.1.1: modify      : removed run-at document-start attribute, just to much to change
-// v1.1.2: modify      : enable huanghe yuketang (well, mostly this is just a test for auto-update)
+// v1.1.2: modify      : enable huanghe yuketang
 // v1.1.3: modify      : the cardS problem
+// v1.1.4: test auto upgrade
 /*
 notes: if some other guy wants to modify this script, this may help with your reading
 1. You know what they say about '!important', never use them in your plug-ins. Well, consider this a very BAD example.
