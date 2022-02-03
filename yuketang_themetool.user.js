@@ -31,7 +31,7 @@
 // v1.1.1: modify      : removed run-at document-start attribute, just to much to change
 // v1.1.2: modify      : enable huanghe yuketang
 // v1.1.3: modify      : the cardS problem
-// v1.1.4: test auto upgrade
+// v1.1.4: modify      : test auto upgrade, added try catch block
 /*
 notes: if some other guy wants to modify this script, this may help with your reading
 1. You know what they say about '!important', never use them in your plug-ins. Well, consider this a very BAD example.
@@ -312,8 +312,6 @@ notes: if some other guy wants to modify this script, this may help with your re
             b.toString(16)
         );
     }
-
-
 
     ('load user settings');
 
@@ -1100,106 +1098,116 @@ notes: if some other guy wants to modify this script, this may help with your re
         reference_node
     ) {
         console.log('zhuangbi');
-        GM_xmlhttpRequest({
-            method: 'get',
-            url: 'https://v1.hitokoto.cn/',
-            headers: {
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
-            },
-            onload: function(res) {
-                if (res.status == 200) {
-                    json_dic = JSON.parse(res.responseText);
-                    var new_node =
-                        document.createElement('div');
-                    new_node.setAttribute(
-                        'id',
-                        'us_greeting'
-                    );
-                    new_node.innerHTML =
-                        json_dic.hitokoto +
-                        '    ' +
-                        '——' +
-                        json_dic.from;
-                    eltab_whole.insertBefore(
-                        new_node,
-                        reference_node
-                    );
-                    GM_addStyle(
-                        'div#us_greeting{font-size:2em; margin-top:1em;margin-left:1em; margin-right:1em;}'
-                    );
-                } else {
-                    console.log('error');
-                }
-            },
-        });
+        try {
+            GM_xmlhttpRequest({
+                method: 'get',
+                url: 'https://v1.hitokoto.cn/',
+                headers: {
+                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
+                },
+                onload: function(res) {
+                    if (res.status == 200) {
+                        json_dic = JSON.parse(
+                            res.responseText
+                        );
+                        var new_node =
+                            document.createElement('div');
+                        new_node.setAttribute(
+                            'id',
+                            'us_greeting'
+                        );
+                        new_node.innerHTML =
+                            json_dic.hitokoto +
+                            '    ' +
+                            '——' +
+                            json_dic.from;
+                        eltab_whole.insertBefore(
+                            new_node,
+                            reference_node
+                        );
+                        GM_addStyle(
+                            'div#us_greeting{font-size:2em; margin-top:1em;margin-left:1em; margin-right:1em;}'
+                        );
+                    } else {
+                        console.log('error');
+                    }
+                },
+            });
+        } catch (err) {}
     }
 
     function insertRainbowFartStr(
         eltab_whole,
         reference_node
     ) {
-        GM_xmlhttpRequest({
-            method: 'get',
-            url: 'https://chp.shadiao.app/api.php',
-            headers: {
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
-            },
-            onload: function(res) {
-                if (res.status == 200) {
-                    console.log('rainbowfart');
-                    var new_node =
-                        document.createElement('div');
-                    new_node.setAttribute(
-                        'id',
-                        'rainbow_fart'
-                    );
-                    new_node.innerHTML = res.responseText;
-                    eltab_whole.insertBefore(
-                        new_node,
-                        reference_node
-                    );
-                    GM_addStyle(
-                        'div#rainbow_fart{font-size:2em; margin-top:1em;margin-left:1em; margin-right:1em;}'
-                    );
-                } else {
-                    console.log('error');
-                }
-            },
-        });
+        try {
+            GM_xmlhttpRequest({
+                method: 'get',
+                url: 'https://chp.shadiao.app/api.php',
+                headers: {
+                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
+                },
+                onload: function(res) {
+                    if (res.status == 200) {
+                        console.log('rainbowfart');
+                        var new_node =
+                            document.createElement('div');
+                        new_node.setAttribute(
+                            'id',
+                            'rainbow_fart'
+                        );
+                        new_node.innerHTML =
+                            res.responseText;
+                        eltab_whole.insertBefore(
+                            new_node,
+                            reference_node
+                        );
+                        GM_addStyle(
+                            'div#rainbow_fart{font-size:2em; margin-top:1em;margin-left:1em; margin-right:1em;}'
+                        );
+                    } else {
+                        console.log('error');
+                    }
+                },
+            });
+        } catch (err) {}
     }
 
     function insertChickenSoupStr(
         eltab_whole,
         reference_node
     ) {
-        GM_xmlhttpRequest({
-            method: 'get',
-            url: 'https://api.btstu.cn/yan/api.php',
-            headers: {
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
-            },
-            onload: function(res) {
-                if (res.status == 200) {
-                    console.log('chicksoup');
-                    var new_node =
-                        document.createElement('div');
-                    new_node.setAttribute(
-                        'id',
-                        'us_greeting'
-                    );
-                    new_node.innerHTML = res.responseText;
-                    eltab_whole.insertBefore(
-                        new_node,
-                        reference_node
-                    );
-                    GM_addStyle(
-                        'div#us_greeting{font-size:2em; margin-top:1em;margin-left:1em; margin-right:1em;}'
-                    );
-                } else {
-                    console.log('error');
-                }
-            },
-        });
+        try {
+            GM_xmlhttpRequest({
+                method: 'get',
+                url: 'https://api.btstu.cn/yan/api.php',
+                headers: {
+                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
+                },
+                onload: function(res) {
+                    if (res.status == 200) {
+                        console.log('chicksoup');
+                        var new_node =
+                            document.createElement('div');
+                        new_node.setAttribute(
+                            'id',
+                            'us_greeting'
+                        );
+                        new_node.innerHTML =
+                            res.responseText;
+                        eltab_whole.insertBefore(
+                            new_node,
+                            reference_node
+                        );
+                        GM_addStyle(
+                            'div#us_greeting{font-size:2em; margin-top:1em;margin-left:1em; margin-right:1em;}'
+                        );
+                    } else {
+                        console.log('error');
+                    }
+                },
+            });
+        } catch (err) {}
     }
 
     function addGreeting(jNode) {
