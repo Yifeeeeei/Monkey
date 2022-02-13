@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         雨课堂配色脚本
-// @version      1.1.4
+// @version      1.1.5
 // @description  手动设置雨课堂配色+每日问候
 // @author       if
 // namespace     yekutang.if
@@ -32,6 +32,7 @@
 // v1.1.2: modify      : enable huanghe yuketang
 // v1.1.3: modify      : the cardS problem
 // v1.1.4: modify      : test auto upgrade, added try catch block
+// v1.1.5: modify      : cloud repo page
 /*
 notes: if some other guy wants to modify this script, this may help with your reading
 1. You know what they say about '!important', never use them in your plug-ins. Well, consider this a very BAD example.
@@ -961,6 +962,17 @@ notes: if some other guy wants to modify this script, this may help with your re
         // that little arrow
         var repo_cloud_arrow_style = `.file-upload-button-wrapper .yupan-upload-button[data-v-410e509b] {border-bottom-color: ${color_set.text_color_secondary};}`;
         GM_addStyle(repo_cloud_arrow_style);
+        // container background
+        var repo_cloud_background_style = `#app > div.viewContainer > section > section.repository__container{background-color:${color_set.background_color_main};}`;
+        GM_addStyle(repo_cloud_background_style);
+        // search bar
+        var repo_cloud_search_bar_style = `#app > div.viewContainer > section > section.repository__container > div > div.cloud-right-wrapper > div.button-wrapper.font14 > div.text-left.search-wrapper{background-color:${color_set.background_color_main}; border:1px solid ${color_set.text_color_main};}}
+        #app > div.viewContainer > section > section.repository__container > div > div.cloud-right-wrapper > div.button-wrapper.font14 > div.text-left.search-wrapper > input{color:${color_set.text_color_main};background-color:${color_set.background_color_main} !important;}
+        #app > div.viewContainer > section > section.repository__container > div > div.cloud-right-wrapper > div.button-wrapper.font14 > div.text-left.search-wrapper > div {background-color:${color_set.background_color_main}; color:${color_set.text_color_secondary};}
+        #app > div.viewContainer > section > section.repository__container > div > div.cloud-right-wrapper > div.button-wrapper.font14 > div.text-left.search-wrapper > div > span{background-color:${color_set.text_color_main};}
+        #app > div.viewContainer > section > section.repository__container > div > div.cloud-right-wrapper > div.button-wrapper.font14 > div.text-left.search-wrapper > div > i{color:${color_set.text_color_secondary};}
+        `
+        GM_addStyle(repo_cloud_search_bar_style);
 
         ('specific course');
         // student log
@@ -1474,9 +1486,9 @@ notes: if some other guy wants to modify this script, this may help with your re
                     </output>
             </p>
         </div>
-        <div id="color_pick_right" class="color_pick"></div>
-        <button id="color_pick_confirm">confirm</button>
-        <button id="color_pick_cancel">cancel</button>
+        <div id="color_pick_right" class="color_pick" style="background-color:black;"></div>
+        <button id="color_pick_confirm">应用</button>
+        <button id="color_pick_cancel">取消</button>
     </div>
 
     <div id="user_script_user_settings_whole" class="user_script_user_settings" style="
