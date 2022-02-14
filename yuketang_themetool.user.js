@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         雨课堂配色脚本
-// @version      1.1.5
+// @version      1.1.6
 // @description  手动设置雨课堂配色+每日问候
 // @author       if
 // namespace     yekutang.if
@@ -33,6 +33,8 @@
 // v1.1.3: modify      : the cardS problem
 // v1.1.4: modify      : test auto upgrade, added try catch block
 // v1.1.5: modify      : cloud repo page
+// v1.1.6: modify      : add scroll bar to setting page
+
 /*
 notes: if some other guy wants to modify this script, this may help with your reading
 1. You know what they say about '!important', never use them in your plug-ins. Well, consider this a very BAD example.
@@ -1494,6 +1496,8 @@ notes: if some other guy wants to modify this script, this may help with your re
     <div id="user_script_user_settings_whole" class="user_script_user_settings" style="
                 position: absolute;
                 width: 750px;
+                height: 60vh;
+                overflow-y:scroll;
                 border: 5px solid black;
                 border-radius: 10px;
                 padding: 10px;
