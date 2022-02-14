@@ -3,7 +3,7 @@
 // @version      1.1.6
 // @description  手动设置雨课堂配色+每日问候
 // @author       if
-// namespace     yekutang.if
+// @namespace     yekutang.if
 // @updateURL    https://yifeeeeei.github.io/Monkey/yuketang_themetool.user.js
 // @downloadURL  https://yifeeeeei.github.io/Monkey/yuketang_themetool.user.js
 // @include      https://www.yuketang.cn/v2/web/*
