@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         雨课堂配色脚本
-// @version      1.1.6
+// @version      1.1.7
 // @description  手动设置雨课堂配色+每日问候
 // @author       if
 // @namespace     yekutang.if
@@ -18,6 +18,7 @@
 // @connect      chp.shadiao.app
 // @connect      v1.hitokoto.cn
 // @connect      api.btstu.cn
+// @connect      api.shadiao.pro
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js
 // ==/UserScript==
 
@@ -34,6 +35,7 @@
 // v1.1.4: modify      : test auto upgrade, added try catch block
 // v1.1.5: modify      : cloud repo page
 // v1.1.6: modify      : add scroll bar to setting page
+// v1.1.7: modify      : new api for fart
 
 /*
 notes: if some other guy wants to modify this script, this may help with your reading
@@ -1157,12 +1159,17 @@ notes: if some other guy wants to modify this script, this may help with your re
         try {
             GM_xmlhttpRequest({
                 method: 'get',
-                url: 'https://chp.shadiao.app/api.php',
+                url: 'https://api.shadiao.pro/chp',
                 headers: {
                     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
                 },
                 onload: function(res) {
                     if (res.status == 200) {
+                        json_dic = JSON.parse(
+                            res.responseText
+                        );
+                        text = json_dic.data.text;
+
                         console.log('rainbowfart');
                         var new_node =
                             document.createElement('div');
@@ -1171,7 +1178,7 @@ notes: if some other guy wants to modify this script, this may help with your re
                             'rainbow_fart'
                         );
                         new_node.innerHTML =
-                            res.responseText;
+                            text;
                         eltab_whole.insertBefore(
                             new_node,
                             reference_node
