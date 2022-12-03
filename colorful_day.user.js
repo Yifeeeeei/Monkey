@@ -25,7 +25,7 @@ if (domain.indexOf("bilibili.com") != -1) {
     baidu_body.classList = body_class;
 } else if (domain.indexOf("qq.com") != -1) {
     const style =
-        ".gray{-webkit-filter: grayscale(.0) !important;    filter: grayscale(0%) !important;}";
+        "html{-webkit-filter: grayscale(.0) !important;    filter: grayscale(0%) !important;}";
     GM_addStyle(style);
 } else if (domain.indexOf("jd.com") != -1) {
     const baidu_body = document.getElementsByTagName("html")[0];
