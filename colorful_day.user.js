@@ -8,6 +8,8 @@
 // @grant        GM_addStyle
 // @include      *bilibili.com*
 // @include      *baidu.com*
+// @include      *qq.com*
+// @include      *jd.com*
 // ==/UserScript==
 
 var domain = window.location.href;
@@ -20,5 +22,14 @@ if (domain.indexOf("bilibili.com") != -1) {
     const baidu_body = document.getElementsByTagName("body")[0];
     var body_class = baidu_body.classList;
     body_class.remove("big-event-gray");
+    baidu_body.classList = body_class;
+} else if (domain.indexOf("qq.com") != -1) {
+    const style =
+        ".gray{-webkit-filter: grayscale(.0) !important;    filter: grayscale(0%) !important;}";
+    GM_addStyle(style);
+} else if (domain.indexOf("jd.com") != -1) {
+    const baidu_body = document.getElementsByTagName("html")[0];
+    var body_class = baidu_body.classList;
+    body_class.remove("o2_gray");
     baidu_body.classList = body_class;
 }
