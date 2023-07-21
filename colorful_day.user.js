@@ -2,7 +2,7 @@
 // @name         colorful_day
 // @version      0.1
 // @description  the way it is
-// @author       if
+// @author       Yifeeeeei
 // @updateURL    https://yifeeeeei.github.io/Monkey/colorful_day.user.js
 // @downloadURL  https://yifeeeeei.github.io/Monkey/colorful_day.user.js
 // @grant        GM_addStyle

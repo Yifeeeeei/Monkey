@@ -2,7 +2,7 @@
 // @name         wlxt_theme_tool
 // @version      1.8
 // @description  customize your wlxt
-// @author       if
+// @author       Yifeeeeei
 // @updateURL    https://yifeeeeei.github.io/Monkey/wlxt_theme_tool.user.js
 // @downloadURL  https://yifeeeeei.github.io/Monkey/wlxt_theme_tool.user.js
 // @include      https://learn.tsinghua.edu.cn/f/*
@@ -21,10 +21,9 @@
 //1.6 debug
 //1.7 auto set mainpage text color(notice,document and works)
 
-(function() {
+(function () {
     "use strict";
     var body = document.getElementsByTagName("body")[0];
-
 
     var colorSet = GM_getValue("colorSet", [-1]);
     var basic_color;
@@ -118,40 +117,71 @@
 
     function colorFix(inColor) {
         while (inColor > 255) {
-            inColor = inColor - 255
+            inColor = inColor - 255;
         }
         while (inColor < 0) {
-            inColor += 255
+            inColor += 255;
         }
-        return inColor
+        return inColor;
     }
 
     function getBasicColor() {
-        var tup = [255, 255, 255]
-        var rgbNumbers = basic_color.match(/[0-9]+/g)
+        var tup = [255, 255, 255];
+        var rgbNumbers = basic_color.match(/[0-9]+/g);
         if (rgbNumbers.length == 3) {
             for (var i = 0; i < 3; i++) {
-                rgbNumbers[i] = parseInt(rgbNumbers[i])
+                rgbNumbers[i] = parseInt(rgbNumbers[i]);
             }
-            tup = [rgbNumbers[0], rgbNumbers[1], rgbNumbers[2]]
+            tup = [rgbNumbers[0], rgbNumbers[1], rgbNumbers[2]];
         }
-        var gb_color1 = [colorFix(tup[0] + 0xf7 - 0xff), colorFix(tup[1] + 0x89 - 0xff), colorFix(tup[2] + 0x13 - 0xff)]
-        var gb_color2 = [colorFix(tup[0] + 0x4f - 0xff), colorFix(tup[1] + 0xc2 - 0xff), colorFix(tup[2] + 0xb9 - 0xff)]
-        var gb_color3 = [colorFix(tup[0] + 0x8f - 0xff), colorFix(tup[1] + 0xca - 0xff), colorFix(tup[2] + 0x6e - 0xff)]
+        var gb_color1 = [
+            colorFix(tup[0] + 0xf7 - 0xff),
+            colorFix(tup[1] + 0x89 - 0xff),
+            colorFix(tup[2] + 0x13 - 0xff),
+        ];
+        var gb_color2 = [
+            colorFix(tup[0] + 0x4f - 0xff),
+            colorFix(tup[1] + 0xc2 - 0xff),
+            colorFix(tup[2] + 0xb9 - 0xff),
+        ];
+        var gb_color3 = [
+            colorFix(tup[0] + 0x8f - 0xff),
+            colorFix(tup[1] + 0xca - 0xff),
+            colorFix(tup[2] + 0x6e - 0xff),
+        ];
 
-        gb_color1 = "rgb(" + gb_color1[0] + "," + gb_color1[1] + "," + gb_color1[2] + ")"
-        gb_color2 = "rgb(" + gb_color2[0] + "," + gb_color2[1] + "," + gb_color2[2] + ")"
-        gb_color3 = "rgb(" + gb_color3[0] + "," + gb_color3[1] + "," + gb_color3[2] + ")"
-        return [gb_color1, gb_color2, gb_color3]
-
+        gb_color1 =
+            "rgb(" +
+            gb_color1[0] +
+            "," +
+            gb_color1[1] +
+            "," +
+            gb_color1[2] +
+            ")";
+        gb_color2 =
+            "rgb(" +
+            gb_color2[0] +
+            "," +
+            gb_color2[1] +
+            "," +
+            gb_color2[2] +
+            ")";
+        gb_color3 =
+            "rgb(" +
+            gb_color3[0] +
+            "," +
+            gb_color3[1] +
+            "," +
+            gb_color3[2] +
+            ")";
+        return [gb_color1, gb_color2, gb_color3];
     }
 
     //1 MainPage
     if (
         domain == "https://learn.tsinghua.edu.cn/f/wlxt/index/course/student/"
     ) {
-
-        var gbs = getBasicColor()
+        var gbs = getBasicColor();
 
         otheR =
             `.boxdetail dd.stu{border-color: ${basic_color};}` +
@@ -329,7 +359,7 @@
 			#addForm > div.list.target > div.right.clearfix > div > label {color:${text_color2};}` +
             `#myTags > li > input,#bt{color:${text_color1};}`;
 
-        setTimeout(function() {
+        setTimeout(function () {
             var frame_style = document
                 .getElementById("cke_1_contents")
                 .getElementsByTagName("iframe")[0]
@@ -385,7 +415,7 @@
         changeColor.id = "changeColor";
         changeColor.src =
             "data:image/png;base64,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";
-        changeColor.onclick = function() {
+        changeColor.onclick = function () {
             colorSet[0] = prompt(
                 "set main color ( rgb(x,x,x) or name )",
                 colorSet[0]
@@ -417,7 +447,7 @@
             var bo = document.getElementsByTagName("body");
 
             if (bo.length == 0) {
-                setTimeout(function() {
+                setTimeout(function () {
                     bo[0].appendChild(changeColor);
                 }, 1000);
             } else {
