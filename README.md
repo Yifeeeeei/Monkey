@@ -9,4 +9,7 @@
   
   trojan is a script I copied a long time ago. It was written by someone else, however it got deleted. Luckily I still have one here. It allows you to create your own proxy server.
   
-  yeketang_theme_tool is a grease monkey script that i wrote to change the theme of yuketang(https://pro.yuketang.cn/web?index), well, just like that wlxt_theme_tool. But I made a way friendlier UI as well as a daily quote thing. It's a birthday present for a friend :)
+  yeketang_theme_tool is a grease monkey script that i wrote to change the theme of yuketang(https://pro.yuketang.cn/web?index), well, just like that wlxt_theme_tool. But I made a way friendlier UI as well as a daily quote thing. A birthday present for a friend :)
+
+  csdn_free_copy is a grease monkey script that allows you to copy code block from csdn without the requested logging in step.
+  
