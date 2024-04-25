@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         bilibiliSearchHotKey
-// @version      0.3
+// @version      0.4
 // @description  use '/' to focus on search bar, use arrow key to navigate search results, enter to open the selected video, esc to loose focus
 // @author       Yifeeeeei
 // @updateURL    https://yifeeeeei.github.io/Monkey/bilibiliSearchHotKey.user.js
@@ -164,7 +164,7 @@
                     .getElementsByTagName("button")[0];
                 freeRollButton.click();
                 currentSelection = -1;
-                event.preventDefault();
+                // event.preventDefault();
             }
 
             if (event.key == "Enter") {
@@ -262,7 +262,7 @@
                     var sp = tmpRollButton
                         .getElementsByTagName("button")[0]
                         .getElementsByTagName("span")[0];
-                    sp.innerText = sp.innerText + "R";
+                    sp.innerText = sp.innerText + "[R]";
                 }
                 if (tmpRollButton) {
                     clearInterval(rollInterval);
