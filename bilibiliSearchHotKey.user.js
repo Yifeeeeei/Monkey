@@ -6,7 +6,7 @@
 // @updateURL    https://yifeeeeei.github.io/Monkey/bilibiliSearchHotKey.user.js
 // @downloadURL  https://yifeeeeei.github.io/Monkey/bilibiliSearchHotKey.user.js
 // @grant        GM_addStyle
-// @include      *bilibili.com*
+// @match        https://*.bilibili.com/*
 // ==/UserScript==
 
 (function () {
